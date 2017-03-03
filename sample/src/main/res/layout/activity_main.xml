@@ -7,10 +7,37 @@
     tools:context="com.alorma.cityview.sample.MainActivity"
     >
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="Hello World!"
-      />
+  <com.alorma.cityview.CityView
+      android:layout_width="match_parent"
+      android:layout_height="140dp"
+      android:layout_gravity="bottom"
+      android:layout_margin="10dp"
+      >
+
+    <com.alorma.cityview.BuildingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:building_color="@color/colorPrimary"
+        />
+
+    <com.alorma.cityview.BuildingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:building_color="@color/colorAccent"
+        />
+
+    <com.alorma.cityview.BuildingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:building_color="@color/colorPrimaryDark"
+        />
+
+    <com.alorma.cityview.BuildingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:building_color="@color/colorAccent"
+        />
+
+  </com.alorma.cityview.CityView>
 
 </FrameLayout>

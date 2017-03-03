@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="BuildingView">
+    <attr name="building_color" format="color"/>
+  </declare-styleable>
+</resources>

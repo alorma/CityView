@@ -15,7 +15,7 @@
       app:buildings_color="#777777"
       app:buildings_padding="2dp"
       app:buildings_number="10"
-      app:buildings_height_parts="10"
+      app:buildings_height_parts="7"
       />
 
 </FrameLayout>

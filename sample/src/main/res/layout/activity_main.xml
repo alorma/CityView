@@ -8,8 +8,17 @@
     android:background="#CCCCCC"
     >
 
+  <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/random"
+      android:text="RANDOM"
+      android:layout_gravity="center"
+      />
+
   <com.alorma.cityview.CityView
       android:layout_width="match_parent"
+      android:id="@+id/cityView"
       android:layout_height="100dp"
       android:layout_gravity="bottom"
       app:buildings_color="#777777"

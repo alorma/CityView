@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 public class CityView extends ViewGroup {
 
   private int buildingsColor;
+  private int buildsPadding;
+  private int buildingsNumber;
 
   public CityView(Context context) {
     super(context);
@@ -35,12 +37,24 @@ public class CityView extends ViewGroup {
     init(context, attrs, defStyleAttr);
   }
 
-  private void init(Context context, AttributeSet attrs, int defStyleAttrs) {
+  private void init(Context context, AttributeSet attrs, int defStyleAttr) {
     if (!isInEditMode()) {
 
     }
     if (attrs != null) {
-      buildingsColor = readBuildColorsAttr(context, attrs, defStyleAttrs, Color.GRAY);
+      TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CityView, defStyleAttr, R.style.CityViewTheme);
+      try {
+        buildingsColor = ta.getColor(R.styleable.CityView_buildings_color, Color.GRAY);
+        buildingsNumber = ta.getInt(R.styleable.CityView_buildings_number, 4);
+        int defaultPadding = getContext().getResources().getDimensionPixelOffset(R.dimen.build_padding);
+        buildsPadding = ta.getDimensionPixelOffset(R.styleable.CityView_buildings_padding, defaultPadding);
+      } finally {
+        ta.recycle();
+      }
+
+      for (int i = 0; i < buildingsNumber; i++) {
+        addView(new BuildingView(context, attrs, defStyleAttr));
+      }
     }
   }
 
@@ -48,7 +62,7 @@ public class CityView extends ViewGroup {
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     int totalWidth = MeasureSpec.getSize(widthMeasureSpec);
     int totalHeight = MeasureSpec.getSize(heightMeasureSpec);
-    int childWidth = totalWidth / getChildCount();
+    int childWidth = (totalWidth / getChildCount()) - buildsPadding;
 
     for (int i = 0; i < getChildCount(); i++) {
       final View child = getChildAt(i);
@@ -66,7 +80,7 @@ public class CityView extends ViewGroup {
       View view = getChildAt(i);
       view.layout(left, 0, left + view.getMeasuredWidth(), view.getMeasuredHeight());
 
-      left = left + view.getMeasuredWidth();
+      left = left + view.getMeasuredWidth() + buildsPadding;
     }
   }
 
@@ -75,15 +89,6 @@ public class CityView extends ViewGroup {
     if (child instanceof BuildingView) {
       super.addView(child, index, params);
       ((BuildingView) child).setBuildingColor(buildingsColor);
-    }
-  }
-
-  private int readBuildColorsAttr(Context context, AttributeSet attrs, int defStyleAttr, int buildingColor) {
-    TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CityView, defStyleAttr, R.style.CityViewTheme);
-    try {
-      return ta.getColor(R.styleable.CityView_buildings_color, buildingColor);
-    } finally {
-      ta.recycle();
     }
   }
 }

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="CityViewTheme">
+    <item name="buildings_color">#FFFF00</item>
+  </style>
+
+  <style name="BuildViewTheme">
+    <item name="building_color">#00FF00</item>
+  </style>
+</resources>

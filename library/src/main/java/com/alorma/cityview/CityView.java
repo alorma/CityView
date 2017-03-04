@@ -1,6 +1,8 @@
 package com.alorma.cityview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -10,30 +12,35 @@ import android.view.ViewGroup;
 
 public class CityView extends ViewGroup {
 
+  private int buildingsColor;
+
   public CityView(Context context) {
     super(context);
-    init();
+    init(context, null, 0);
   }
 
   public CityView(Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
-    init();
+    init(context, attrs, 0);
   }
 
   public CityView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init();
+    init(context, attrs, defStyleAttr);
   }
 
   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   public CityView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
-    init();
+    init(context, attrs, defStyleAttr);
   }
 
-  private void init() {
+  private void init(Context context, AttributeSet attrs, int defStyleAttrs) {
     if (!isInEditMode()) {
 
+    }
+    if (attrs != null) {
+      buildingsColor = readBuildColorsAttr(context, attrs, defStyleAttrs, Color.GRAY);
     }
   }
 
@@ -67,6 +74,16 @@ public class CityView extends ViewGroup {
   public void addView(View child, int index, ViewGroup.LayoutParams params) {
     if (child instanceof BuildingView) {
       super.addView(child, index, params);
+      ((BuildingView) child).setBuildingColor(buildingsColor);
+    }
+  }
+
+  private int readBuildColorsAttr(Context context, AttributeSet attrs, int defStyleAttr, int buildingColor) {
+    TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CityView, defStyleAttr, R.style.CityViewTheme);
+    try {
+      return ta.getColor(R.styleable.CityView_buildings_color, buildingColor);
+    } finally {
+      ta.recycle();
     }
   }
 }

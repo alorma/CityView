@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.alorma.cityview.sample.MainActivity"
+    android:background="#CCCCCC"
     >
 
   <com.alorma.cityview.CityView
       android:layout_width="match_parent"
-      android:layout_height="140dp"
+      android:layout_height="100dp"
       android:layout_gravity="bottom"
-      app:buildings_color="#404040"
+      app:buildings_color="#777777"
       app:buildings_padding="2dp"
       app:buildings_number="10"
+      app:buildings_height_parts="10"
       />
 
 </FrameLayout>

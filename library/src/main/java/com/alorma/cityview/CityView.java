@@ -2,7 +2,6 @@ package com.alorma.cityview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -12,9 +11,7 @@ import android.view.ViewGroup;
 
 public class CityView extends ViewGroup {
 
-  private int buildingsColor;
   private int buildsPadding;
-  private int buildingsNumber;
 
   public CityView(Context context) {
     super(context);
@@ -43,8 +40,8 @@ public class CityView extends ViewGroup {
     }
     if (attrs != null) {
       TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CityView, defStyleAttr, R.style.CityViewTheme);
+      int buildingsNumber;
       try {
-        buildingsColor = ta.getColor(R.styleable.CityView_buildings_color, Color.GRAY);
         buildingsNumber = ta.getInt(R.styleable.CityView_buildings_number, 4);
         int defaultPadding = getContext().getResources().getDimensionPixelOffset(R.dimen.build_padding);
         buildsPadding = ta.getDimensionPixelOffset(R.styleable.CityView_buildings_padding, defaultPadding);
@@ -88,7 +85,6 @@ public class CityView extends ViewGroup {
   public void addView(View child, int index, ViewGroup.LayoutParams params) {
     if (child instanceof BuildingView) {
       super.addView(child, index, params);
-      ((BuildingView) child).setBuildingColor(buildingsColor);
     }
   }
 }

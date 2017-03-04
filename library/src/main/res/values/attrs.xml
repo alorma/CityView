@@ -2,6 +2,7 @@
 <resources>
   <declare-styleable name="CityView">
     <attr name="buildings_number" format="integer"/>
+    <attr name="buildings_height_parts" format="integer"/>
     <attr name="buildings_color" format="color"/>
     <attr name="buildings_padding" format="dimension" />
   </declare-styleable>

@@ -1,15 +1,27 @@
 package com.alorma.cityview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
+import java.util.Random;
 
 public class BuildingView extends View {
+
+  private static final int HEIGHT_PARTS = 4;
+
+  private Rect rect;
+  private Paint paint;
+  private Random random;
+  private int maxHeight;
+  private int heightParts = HEIGHT_PARTS;
 
   public BuildingView(Context context) {
     super(context);
@@ -36,9 +48,45 @@ public class BuildingView extends View {
     if (!isInEditMode()) {
 
     }
+
+    random = new Random();
+
+    rect = new Rect();
+    paint = new Paint();
+
+    if (attrs != null) {
+      TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CityView, defStyleAttr, R.style.CityViewTheme);
+      try {
+        int buildingsColor = ta.getColor(R.styleable.CityView_buildings_color, Color.BLUE);
+        paint.setColor(buildingsColor);
+        heightParts = ta.getInt(R.styleable.CityView_buildings_height_parts, HEIGHT_PARTS);
+      } finally {
+        ta.recycle();
+      }
+    }
   }
 
-  public void setBuildingColor(@ColorInt int buildingColor) {
-    setBackgroundColor(buildingColor);
+  @Override
+  protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+    canvas.getClipBounds(rect);
+    rect.top = maxHeight;
+
+    canvas.drawRect(rect, paint);
+  }
+
+  @Override
+  protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h, oldw, oldh);
+
+    maxHeight = (h / heightParts) * getRandom();
+  }
+
+  private int getRandom() {
+    int value;
+    do {
+      value = random.nextInt(heightParts);
+    } while (value == heightParts);
+    return value;
   }
 }

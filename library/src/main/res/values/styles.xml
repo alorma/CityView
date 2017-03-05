@@ -4,4 +4,8 @@
   <style name="CityViewTheme">
     <item name="buildings_color">#FFFF00</item>
   </style>
+
+  <style name="BuildingViewTheme">
+    <item name="building_color">#FFAAFF</item>
+  </style>
 </resources>

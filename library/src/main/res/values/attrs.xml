@@ -6,4 +6,7 @@
     <attr name="buildings_color" format="color"/>
     <attr name="buildings_padding" format="dimension" />
   </declare-styleable>
+  <declare-styleable name="BuildingView">
+    <attr name="building_color" format="color"/>
+  </declare-styleable>
 </resources>

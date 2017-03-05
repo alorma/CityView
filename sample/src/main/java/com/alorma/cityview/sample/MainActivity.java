@@ -13,14 +13,14 @@ public class MainActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
-    cityView = (CityView) findViewById(R.id.cityView);
-
-    findViewById(R.id.random).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        cityView.requestLayout();
-      }
-    });
+    //
+    //cityView = (CityView) findViewById(R.id.cityView);
+    //
+    //findViewById(R.id.random).setOnClickListener(new View.OnClickListener() {
+    //  @Override
+    //  public void onClick(View v) {
+    //    cityView.requestLayout();
+    //  }
+    //});
   }
 }

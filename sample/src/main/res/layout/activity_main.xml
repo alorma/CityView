@@ -16,6 +16,14 @@
       android:layout_gravity="center"
       />
 
+  <com.alorma.cityview.BuildingView
+      android:layout_width="64dp"
+      android:layout_height="100dp"
+      android:layout_gravity="center|right"
+      android:layout_marginRight="24dp"
+      app:building_color="#333333"
+      />
+
   <com.alorma.cityview.CityView
       android:layout_width="match_parent"
       android:id="@+id/cityView"

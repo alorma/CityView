@@ -22,26 +22,26 @@ public class BuildingView extends View {
 
   public BuildingView(Context context) {
     super(context);
-    init(context, null, 0);
+    init(context, null, 0, R.style.BuildingViewTheme);
   }
 
   public BuildingView(Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
-    init(context, attrs, 0);
+    init(context, attrs, 0, R.style.BuildingViewTheme);
   }
 
   public BuildingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    init(context, attrs, defStyleAttr);
+    init(context, attrs, defStyleAttr, R.style.BuildingViewTheme);
   }
 
   @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   public BuildingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
-    init(context, attrs, defStyleAttr);
+    init(context, attrs, defStyleAttr, defStyleRes);
   }
 
-  private void init(Context context, AttributeSet attrs, int defStyleAttr) {
+  private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     if (!isInEditMode()) {
 
     }
@@ -49,18 +49,45 @@ public class BuildingView extends View {
     rect = new Rect();
     paint = new Paint();
 
+    int buildingsColor = Color.BLUE;
     if (attrs != null) {
-      TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CityView, defStyleAttr, R.style.CityViewTheme);
-      try {
-        int buildingsColor = ta.getColor(R.styleable.CityView_buildings_color, Color.BLUE);
-        paint.setColor(buildingsColor);
-      } finally {
-        ta.recycle();
+      boolean containsBuildColor = containsBuildColor(attrs);
+
+      if (containsBuildColor) {
+        buildingsColor = loadAttribute(context, attrs, defStyleAttr, buildingsColor, R.styleable.BuildingView, defStyleRes,
+            R.styleable.BuildingView_building_color);
+      } else {
+        buildingsColor = loadAttribute(context, attrs, defStyleAttr, buildingsColor, R.styleable.CityView, R.style.CityViewTheme,
+            R.styleable.CityView_buildings_color);
       }
     }
 
+    paint.setColor(buildingsColor);
     buildWindowsBottomPadding = getResources().getDimensionPixelOffset(R.dimen.build_windows_padding);
     windowSize = getResources().getDimensionPixelOffset(R.dimen.build_windows_size);
+  }
+
+  private boolean containsBuildColor(AttributeSet attrs) {
+    boolean containsBuildColor = false;
+    for (int i = 0; i < attrs.getAttributeCount(); i++) {
+      if (attrs.getAttributeName(i).equalsIgnoreCase("building_color")) {
+        containsBuildColor = true;
+        break;
+      }
+    }
+    return containsBuildColor;
+  }
+
+  private int loadAttribute(Context context, AttributeSet set, int defStyleAttr,
+      int buildingsColor, int[] attrs, int defStyleRes,
+      int attr) {
+    TypedArray ta = context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
+    try {
+      buildingsColor = ta.getColor(attr, buildingsColor);
+    } finally {
+      ta.recycle();
+    }
+    return buildingsColor;
   }
 
   @Override

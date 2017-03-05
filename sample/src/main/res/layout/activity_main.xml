@@ -9,20 +9,12 @@
     >
 
   <Button
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:id="@+id/random"
-      android:text="RANDOM"
-      android:layout_gravity="center"
-      />
-
-  <com.alorma.cityview.BuildingView
-      android:layout_width="64dp"
-      android:layout_height="100dp"
-      android:layout_gravity="center|right"
-      android:layout_marginRight="24dp"
-      app:building_color="#333333"
-      />
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:id="@+id/random"
+  android:text="RANDOM"
+  android:layout_gravity="center"
+  />
 
   <com.alorma.cityview.CityView
       android:layout_width="match_parent"
@@ -32,7 +24,35 @@
       app:buildings_color="#777777"
       app:buildings_padding="2dp"
       app:buildings_number="10"
-      app:buildings_height_parts="7"
+      app:buildings_height_parts="10"
+      />
+
+  <com.alorma.cityview.BuildingView
+      android:layout_width="64dp"
+      android:layout_height="100dp"
+      android:layout_gravity="top|right"
+      app:building_window_size="6dp"
+      app:building_door_height="24dp"
+      app:building_color="#333333"
+      />
+
+  <com.alorma.cityview.BuildingView
+      android:layout_width="64dp"
+      android:layout_height="40dp"
+      android:layout_gravity="top|center_horizontal"
+      app:building_window_size="8dp"
+      app:building_door_height="14dp"
+      app:building_door_width="12dp"
+      app:building_color="#333333"
+      />
+
+  <com.alorma.cityview.BuildingView
+      android:layout_width="64dp"
+      android:layout_height="56dp"
+      android:layout_gravity="top|left"
+      app:building_window_size="6dp"
+      app:building_door_height="24dp"
+      app:building_color="#333333"
       />
 
 </FrameLayout>

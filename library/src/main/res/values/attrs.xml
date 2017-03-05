@@ -8,5 +8,8 @@
   </declare-styleable>
   <declare-styleable name="BuildingView">
     <attr name="building_color" format="color"/>
+    <attr name="building_window_size" format="dimension"/>
+    <attr name="building_door_height" format="dimension"/>
+    <attr name="building_door_width" format="dimension"/>
   </declare-styleable>
 </resources>

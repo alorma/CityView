@@ -16,9 +16,17 @@ public class BuildingView extends View {
 
   private Rect rect;
   private Paint paint;
+
+  private Rect doorRect;
+  private Paint doorPaint;
+
   private int windowSize;
+
+  private int doorHeight;
+  private int doorWidth;
+
   private boolean allowWindows;
-  private int buildWindowsBottomPadding;
+  private boolean allowDoor;
 
   public BuildingView(Context context) {
     super(context);
@@ -49,22 +57,43 @@ public class BuildingView extends View {
     rect = new Rect();
     paint = new Paint();
 
+    doorRect = new Rect();
+    doorPaint = new Paint();
+    doorPaint.setColor(Color.WHITE);
+
     int buildingsColor = Color.BLUE;
     if (attrs != null) {
       boolean containsBuildColor = containsBuildColor(attrs);
 
       if (containsBuildColor) {
-        buildingsColor = loadAttribute(context, attrs, defStyleAttr, buildingsColor, R.styleable.BuildingView, defStyleRes,
+        buildingsColor = loadColorAttribute(context, attrs, defStyleAttr, buildingsColor, R.styleable.BuildingView, defStyleRes,
             R.styleable.BuildingView_building_color);
       } else {
-        buildingsColor = loadAttribute(context, attrs, defStyleAttr, buildingsColor, R.styleable.CityView, R.style.CityViewTheme,
+        buildingsColor = loadColorAttribute(context, attrs, defStyleAttr, buildingsColor, R.styleable.CityView, R.style.CityViewTheme,
             R.styleable.CityView_buildings_color);
       }
     }
-
     paint.setColor(buildingsColor);
-    buildWindowsBottomPadding = getResources().getDimensionPixelOffset(R.dimen.build_windows_padding);
-    windowSize = getResources().getDimensionPixelOffset(R.dimen.build_windows_size);
+
+    loadDimensions(context, attrs, defStyleAttr, defStyleRes);
+  }
+
+  private void loadDimensions(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    int windowSizeDefault = getResources().getDimensionPixelOffset(R.dimen.build_windows_size);
+    windowSize = loadDimensionAttribute(context, attrs, defStyleAttr, windowSizeDefault, R.styleable.BuildingView, defStyleRes,
+        R.styleable.BuildingView_building_window_size);
+
+    loadDoorDimensions(context, attrs, defStyleAttr, defStyleRes);
+  }
+
+  private void loadDoorDimensions(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    int doorHeightDefault = getResources().getDimensionPixelOffset(R.dimen.build_door_height);
+    doorHeight = loadDimensionAttribute(context, attrs, defStyleAttr, doorHeightDefault, R.styleable.BuildingView, defStyleRes,
+        R.styleable.BuildingView_building_door_height);
+
+    int doorWidthDefault = getResources().getDimensionPixelOffset(R.dimen.build_door_width);
+    doorWidth = loadDimensionAttribute(context, attrs, defStyleAttr, doorWidthDefault, R.styleable.BuildingView, defStyleRes,
+        R.styleable.BuildingView_building_door_width);
   }
 
   private boolean containsBuildColor(AttributeSet attrs) {
@@ -78,16 +107,26 @@ public class BuildingView extends View {
     return containsBuildColor;
   }
 
-  private int loadAttribute(Context context, AttributeSet set, int defStyleAttr,
-      int buildingsColor, int[] attrs, int defStyleRes,
+  private int loadDimensionAttribute(Context context, AttributeSet set, int defStyleAttr, int defaultValue, int[] attrs, int defStyleRes,
       int attr) {
     TypedArray ta = context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
     try {
-      buildingsColor = ta.getColor(attr, buildingsColor);
+      defaultValue = ta.getDimensionPixelOffset(attr, defaultValue);
     } finally {
       ta.recycle();
     }
-    return buildingsColor;
+    return defaultValue;
+  }
+
+  private int loadColorAttribute(Context context, AttributeSet set, int defStyleAttr, int defaultValue, int[] attrs, int defStyleRes,
+      int attr) {
+    TypedArray ta = context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
+    try {
+      defaultValue = ta.getColor(attr, defaultValue);
+    } finally {
+      ta.recycle();
+    }
+    return defaultValue;
   }
 
   @Override
@@ -95,18 +134,57 @@ public class BuildingView extends View {
     super.onDraw(canvas);
     canvas.getClipBounds(rect);
 
+    drawBuild(canvas);
+    if (allowDoor) {
+      drawDoor(canvas);
+    }
+  }
+
+  private void drawBuild(Canvas canvas) {
     canvas.drawRect(rect, paint);
+  }
+
+  private void drawDoor(Canvas canvas) {
+    canvas.drawRect(doorRect, doorPaint);
   }
 
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-
-    allowWindows = (h > (windowSize * 3) + buildWindowsBottomPadding) && w > (windowSize * 2);
   }
 
   @Override
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
+
+    int height = getMeasuredHeight();
+    int width = getMeasuredWidth();
+
+    if (doorHeight == 0 && windowSize == 0) {
+      allowDoor = false;
+      allowWindows = false;
+    }
+
+    if (height > doorHeight + windowSize) {
+      allowDoor = true;
+      if (height > doorHeight + (windowSize * 3)) {
+        allowWindows = true;
+      }
+    } else {
+      allowDoor = false;
+      allowWindows = false;
+    }
+
+    allowDoor = allowWindows && width > (doorWidth * 3);
+
+    if (changed && allowDoor) {
+      int doorTop = getMeasuredHeight() - doorHeight;
+      int doorHalf = doorWidth / 2;
+      int middle = (width) / 2;
+      doorRect.left = middle - doorHalf;
+      doorRect.top = doorTop;
+      doorRect.right = middle + doorHalf;
+      doorRect.bottom = bottom;
+    }
   }
 }

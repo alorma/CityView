@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="build_padding">8dp</dimen>
-  <dimen name="build_windows_padding">24dp</dimen>
   <dimen name="build_windows_size">8dp</dimen>
+  <dimen name="build_door_height">16dp</dimen>
+  <dimen name="build_door_width">10dp</dimen>
 </resources>
